@@ -26,10 +26,16 @@ namespace ConsoleApplication8
 
 
             PaintArray(array);
-               InputCell(array);
+            do
+            {
+                InputCell(array);
+                PaintArray(array);
 
-            Console.ReadLine();
+            } while (true);
+           // Console.ReadLine();
         }
+
+       
 
         public static void ArrangeMines(Cell[,] array, int bombCount)
         {
@@ -137,88 +143,57 @@ namespace ConsoleApplication8
             }
         }
 
-        public static Cell[,] InputCell(Cell[,] array)
+        public static void InputCell(Cell[,] array)
         {
 
-            int size;
             Console.WriteLine("The game started");
-            int selectUserCellisI = Convert.ToInt32(Console.ReadLine());
-            int selectUserCellisJ = Convert.ToInt32(Console.ReadLine());
+            int i = Convert.ToInt32(Console.ReadLine());
+            int j = Convert.ToInt32(Console.ReadLine());
 
-           /* if (selectUserCellisI > array.Length || selectUserCellisJ > array.Length)
+            if (i >= array.Length || j >= array.Length || i < 0 || j < 0)
             {
-                Console.WriteLine("Enter the cell number is less than the size of the field:");
+                Console.WriteLine("Wrong indexes");
             }
-            if (selectUserCellisI < 0 || selectUserCellisJ < 0)
+            else
             {
-
-                Console.WriteLine("Cell number can not be negative");
+                array[i, j].IsOpen = true;
             }
-            */
 
-                for (int i = 0; i < array.GetLength(0); i++)
-                {
-                    for (int j = 0; j < array.GetLength(1); j++)
-                    {
-                        if (i == selectUserCellisI && j == selectUserCellisJ)
-                        {
-                            array[i, j].IsOpen = true;
-                        
-                       Console.Write(' '+array[i, j].Value+' ');
-                        }
-                        
-                        else
-                        {
-                            array[i, j].IsOpen = false;
-                        //Console.WriteLine(array[i, j].IsOpen);
-                    }
-                        
-                          
-                    }
-                }
-            
 
-                    return array;
-                
 
-            
         }
 
         public static void PaintArray(Cell[,] array)
         {
-            Console.WriteLine("array size 0:" + array.GetLength(0));
-            Console.WriteLine("array size 1:" + array.GetLength(1));
-            
-                for (int i = 0; i < array.GetLength(0); i++)
+           for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    for (int j = 0; j < array.GetLength(1); j++)
+                    if (array[i, j].IsOpen)
                     {
-                        if (array[i, j].IsOpen)
-                        {
-                            Console.Write(" " + array[i, j].Value + " ");
-                        }
-                        else
-                        {
-                            Console.Write(" " + '*' + " ");
-                        }
-
+                        Console.Write(" " + array[i, j].Value + " ");
                     }
-                    Console.WriteLine();
-                }
+                    else
+                    {
+                        Console.Write(" " + '*' + " ");
+                    }
 
+                }
+                Console.WriteLine();
             }
 
         }
+
     }
+}
 
 
 
 
 
 
-        
-    
 
 
 
-    
+
+
