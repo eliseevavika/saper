@@ -20,22 +20,24 @@ namespace ConsoleApplication8
 
 
             FillArray(array, bombCount);
-            //todo заполнить массив бомбами и цифрами
             ArrangeMines(array, bombCount);
-            //бесконечный ввод i j
-
+            Console.WriteLine("The game started");
 
             PaintArray(array);
+
+            bool gameFinished = false;
             do
             {
-                InputCell(array);
+               gameFinished = InputCell(array);
                 PaintArray(array);
+             
+            } while (!gameFinished);
 
-            } while (true);
-           // Console.ReadLine();
+            Console.WriteLine("The game over");
+            Console.ReadLine();
         }
 
-       
+
 
         public static void ArrangeMines(Cell[,] array, int bombCount)
         {
@@ -43,10 +45,31 @@ namespace ConsoleApplication8
 
             for (int k = 0; k < bombCount; k++)
             {
+
+                bool engaged = false;
+                do
+                {
+
+                    int l = random.Next(array.GetLength(0));
+                    int m = random.Next(array.GetLength(1));
+                    engaged = array[l, m].Value == 9;
+                    if (!engaged)
+                    {
+                        array[l, m].Value = 9;
+                    }
+                } while (engaged);
+
+                /* дописать
                 int l = random.Next(array.GetLength(0));
                 int m = random.Next(array.GetLength(1));
-
-                array[l, m].Value = 9;
+                if (array[l, m].Value != 9)
+                {
+                    array[l, m].Value = 9;
+                }
+                else
+                {
+                    
+                }*/
             }
 
             for (int i = 0; i < array.GetLength(0); i++)
@@ -143,10 +166,12 @@ namespace ConsoleApplication8
             }
         }
 
-        public static void InputCell(Cell[,] array)
+        public static bool InputCell(Cell[,] array)
         {
+            bool bombInCell = false;
 
-            Console.WriteLine("The game started");
+            Console.WriteLine("Enter indexes:");
+
             int i = Convert.ToInt32(Console.ReadLine());
             int j = Convert.ToInt32(Console.ReadLine());
 
@@ -157,9 +182,13 @@ namespace ConsoleApplication8
             else
             {
                 array[i, j].IsOpen = true;
+                if(array[i, j].Value==9)
+                {
+                    bombInCell = true;
+                }
             }
 
-
+            return bombInCell;
 
         }
 
