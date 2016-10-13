@@ -13,23 +13,12 @@ namespace ConsoleApplication8
         {
             Console.WriteLine("Enter size:");
             int size = Convert.ToInt32(Console.ReadLine());
+
             Cell[,] array = new Cell[size, size];
 
-            int bombCount = 0;
-            bool normalBombCount = false;
-            do
-            {
-
-                Console.WriteLine("Enter count of bombs:");
-                bombCount = Convert.ToInt32(Console.ReadLine());
-                normalBombCount = bombCount <= size * size;
-                if (!normalBombCount)
-                {
-                    Console.WriteLine("Quantity of bombs over the field size");
-                }
-
-            }
-            while (!normalBombCount);
+            int bombCount = InputBombCount(size);
+            
+           
 
 
             FillArray(array, bombCount);
@@ -50,29 +39,32 @@ namespace ConsoleApplication8
             Console.ReadLine();
         }
 
+        private static int InputBombCount(int size)
+        {
+            int bombCount;
+            bool normalBombCount = false;
 
+            do
+            {
+                Console.WriteLine("Enter count of bombs:");
+                bombCount = Convert.ToInt32(Console.ReadLine());
+                normalBombCount = bombCount <= size * size;
+                if (!normalBombCount)
+                {
+                    Console.WriteLine("Quantity of bombs over the field size");
+                }
+
+            }
+            while (!normalBombCount);
+            return bombCount;
+        }
 
         public static void ArrangeMines(Cell[,] array, int bombCount)
         {
             Random random = new Random();
 
             for (int k = 0; k < bombCount; k++)
-            {
-
-                bool engaged = false;
-                do
-                {
-
-                    int l = random.Next(array.GetLength(0));
-                    int m = random.Next(array.GetLength(1));
-                    engaged = array[l, m].Value == 9;
-                    if (!engaged)
-                    {
-                        array[l, m].Value = 9;
-                    }
-                } while (engaged);
-
-                /* дописать
+            {              
                 int l = random.Next(array.GetLength(0));
                 int m = random.Next(array.GetLength(1));
                 if (array[l, m].Value != 9)
@@ -81,8 +73,8 @@ namespace ConsoleApplication8
                 }
                 else
                 {
-                    
-                }*/
+                    k--;
+                }
             }
 
             for (int i = 0; i < array.GetLength(0); i++)
