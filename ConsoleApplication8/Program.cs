@@ -17,25 +17,42 @@ namespace ConsoleApplication8
             Cell[,] array = new Cell[size, size];
 
             int bombCount = InputBombCount(size);
-            
-           
-
 
             FillArray(array, bombCount);
             ArrangeMines(array, bombCount);
-            Console.WriteLine("The game started");
 
+            Console.WriteLine("The game started");
             PaintArray(array);
 
-            bool gameFinished = false;
-            do
+            bool gameContinue = true;
+            int openCellCount=0;
+            while (gameContinue)
             {
-               gameFinished = InputCell(array);
+               
+                Cell cell = InputCell(array); //cell введенная пользователем ячейка
+                 openCellCount ++;
                 PaintArray(array);
-             
-            } while (!gameFinished);
+              
+                if(cell.Value != 9)
+                {
+                    if(openCellCount==size*size- bombCount)
+                    {
+                        Console.WriteLine("You win!!!");
+                        gameContinue = false;
 
-            Console.WriteLine("The game over");
+                    }
+                }
+
+               
+               else
+                {
+                    Console.WriteLine("The game over");
+                    gameContinue = false;
+                }
+                
+            }
+        
+           
             Console.ReadLine();
         }
 
@@ -64,7 +81,7 @@ namespace ConsoleApplication8
             Random random = new Random();
 
             for (int k = 0; k < bombCount; k++)
-            {              
+            {
                 int l = random.Next(array.GetLength(0));
                 int m = random.Next(array.GetLength(1));
                 if (array[l, m].Value != 9)
@@ -81,7 +98,7 @@ namespace ConsoleApplication8
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    int count1 = 0;
+                    int count1 = 0;//считаем кол-во  бомб
                     if (array[i, j].Value != 9)
                     {
 
@@ -171,10 +188,8 @@ namespace ConsoleApplication8
             }
         }
 
-        public static bool InputCell(Cell[,] array)
+        public static Cell InputCell(Cell[,] array)
         {
-            bool bombInCell = false;
-
             Console.WriteLine("Enter indexes:");
 
             int i = Convert.ToInt32(Console.ReadLine());
@@ -187,19 +202,15 @@ namespace ConsoleApplication8
             else
             {
                 array[i, j].IsOpen = true;
-                if(array[i, j].Value==9)
-                {
-                    bombInCell = true;
-                }
             }
 
-            return bombInCell;
+            return array[i, j];
 
         }
 
         public static void PaintArray(Cell[,] array)
         {
-           for (int i = 0; i < array.GetLength(0); i++)
+            for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
@@ -217,6 +228,7 @@ namespace ConsoleApplication8
             }
 
         }
+
 
     }
 }
