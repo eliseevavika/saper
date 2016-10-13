@@ -22,20 +22,20 @@ namespace ConsoleApplication8
             ArrangeMines(array, bombCount);
 
             Console.WriteLine("The game started");
-            PaintArray(array);
+            PrintArray(array);
 
             bool gameContinue = true;
-            int openCellCount=0;
+            int openCellCount = 0;
             while (gameContinue)
             {
-               
+
                 Cell cell = InputCell(array); //cell введенная пользователем ячейка
-                 openCellCount ++;
-                PaintArray(array);
-              
-                if(cell.Value != 9)
+                openCellCount++;
+                PrintArray(array);
+
+                if (cell.Value != 9)
                 {
-                    if(openCellCount==size*size- bombCount)
+                    if (openCellCount == size * size - bombCount)
                     {
                         Console.WriteLine("You win!!!");
                         gameContinue = false;
@@ -43,16 +43,16 @@ namespace ConsoleApplication8
                     }
                 }
 
-               
-               else
+
+                else
                 {
                     Console.WriteLine("The game over");
                     gameContinue = false;
                 }
-                
+
             }
-        
-           
+
+
             Console.ReadLine();
         }
 
@@ -208,7 +208,7 @@ namespace ConsoleApplication8
 
         }
 
-        public static void PaintArray(Cell[,] array)
+        public static void PrintArray(Cell[,] array)
         {
             for (int i = 0; i < array.GetLength(0); i++)
             {
@@ -216,7 +216,14 @@ namespace ConsoleApplication8
                 {
                     if (array[i, j].IsOpen)
                     {
-                        Console.Write(" " + array[i, j].Value + " ");
+                        if (array[i, j].Value == 9)
+                        {
+                            Console.Write(" " + '@' + " ");
+                        }
+                        else
+                        {
+                            Console.Write(" " + array[i, j].Value + " ");
+                        }
                     }
                     else
                     {
