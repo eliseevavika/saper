@@ -15,8 +15,21 @@ namespace ConsoleApplication8
             int size = Convert.ToInt32(Console.ReadLine());
             Cell[,] array = new Cell[size, size];
 
-            Console.WriteLine("Enter count of bombs:");
-            int bombCount = Convert.ToInt32(Console.ReadLine());
+            int bombCount = 0;
+            bool normalBombCount = false;
+            do
+            {
+
+                Console.WriteLine("Enter count of bombs:");
+                bombCount = Convert.ToInt32(Console.ReadLine());
+                normalBombCount = bombCount <= size * size;
+                if (!normalBombCount)
+                {
+                    Console.WriteLine("Quantity of bombs over the field size");
+                }
+
+            }
+            while (!normalBombCount);
 
 
             FillArray(array, bombCount);
