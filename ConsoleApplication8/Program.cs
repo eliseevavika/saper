@@ -46,15 +46,38 @@ namespace ConsoleApplication8
 
                 else
                 {
+                    Console.WriteLine();
                     Console.WriteLine("The game over");
-                    gameContinue = false;
+
+                    Console.WriteLine();
+                    //тут добавила
+                    Console.WriteLine("Bombs located:");
+                    for (int i = 0; i < array.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < array.GetLength(1); j++)
+                        {
+                            if (array[i, j].Value == 9)
+                            {
+                                array[i, j].IsOpen=true;
+                               
+                                Console.Write(" " + '@' + " ");
+                            }
+                        
+                            
+                            else
+                            {
+                                Console.Write(" " + '|' + " ");
+                            }
+
+                        }
+                        Console.WriteLine();
+                        gameContinue = false;
+                    }
                 }
-
             }
-
-
             Console.ReadLine();
         }
+            
 
         private static int InputBombCount(int size)
         {
