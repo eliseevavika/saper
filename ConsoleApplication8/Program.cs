@@ -52,27 +52,8 @@ namespace ConsoleApplication8
                     Console.WriteLine();
                     //тут добавила
                     Console.WriteLine("Bombs located:");
-                    for (int i = 0; i < array.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < array.GetLength(1); j++)
-                        {
-                            if (array[i, j].Value == 9)
-                            {
-                                array[i, j].IsOpen=true;
-                               
-                                Console.Write(" " + '@' + " ");
-                            }
-                        
-                            
-                            else
-                            {
-                                Console.Write(" " + '|' + " ");
-                            }
-
-                        }
-                        Console.WriteLine();
-                        gameContinue = false;
-                    }
+                    PrintArray(array, true);
+                    gameContinue = false;
                 }
             }
             Console.ReadLine();
@@ -230,8 +211,12 @@ namespace ConsoleApplication8
             return array[i, j];
 
         }
-
         public static void PrintArray(Cell[,] array)
+        {
+            PrintArray(array, false);
+        }
+
+        public static void PrintArray(Cell[,] array, bool showBombs)
         {
             for (int i = 0; i < array.GetLength(0); i++)
             {
@@ -250,7 +235,14 @@ namespace ConsoleApplication8
                     }
                     else
                     {
-                        Console.Write(" " + '*' + " ");
+                        if (showBombs && array[i, j].Value == 9)
+                        {
+                            Console.Write(" " + '@' + " ");
+                        }
+                        else
+                        {
+                            Console.Write(" " + '*' + " ");
+                        }
                     }
 
                 }
