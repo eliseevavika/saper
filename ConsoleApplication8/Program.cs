@@ -14,51 +14,53 @@ namespace ConsoleApplication8
             Console.WriteLine("Enter size:");
             int size = Convert.ToInt32(Console.ReadLine());
 
-            Cell[,] array = new Cell[size, size];
-
             int bombCount = InputBombCount(size);
 
-            FillArray(array, bombCount);
-            ArrangeMines(array, bombCount);
+            Cell[,] array = CreateArray(size);
+
+            ArrangeBombs(array, bombCount);
+            CountBombs(array);
 
             Console.WriteLine("The game started");
-            PrintArray(array);
+            PrintArray(array, false);
 
             bool gameContinue = true;
             int openCellCount = 0;
             while (gameContinue)
             {
 
-                Cell cell = InputCell(array); //cell введенная пользователем ячейка
+                Cell cell = InputCell(array);
                 openCellCount++;
-                PrintArray(array);
+                PrintArray(array, false);
 
                 if (cell.Value != 9)
                 {
-                    if (openCellCount == size * size - bombCount)
-                    {
-                        Console.WriteLine("You win!!!");
-                        gameContinue = false;
-
-                    }
+                    gameContinue = !IsWin(openCellCount, size, bombCount);
                 }
-
-
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("The game over");
-
+                    Console.WriteLine("Game over");
                     Console.WriteLine();
-                    //тут добавила
                     Console.WriteLine("Bombs located:");
+
                     PrintArray(array, true);
                     gameContinue = false;
                 }
             }
             Console.ReadLine();
         }
-            
+
+        public static bool IsWin(int openCellCount, int size, int bombCount)
+        {
+            if (openCellCount == size * size - bombCount)
+            {
+                Console.WriteLine("You win!!!");
+                return true;
+            }
+
+            return false;
+        }
 
         private static int InputBombCount(int size)
         {
@@ -80,7 +82,7 @@ namespace ConsoleApplication8
             return bombCount;
         }
 
-        public static void ArrangeMines(Cell[,] array, int bombCount)
+        public static void ArrangeBombs(Cell[,] array, int bombCount)
         {
             Random random = new Random();
 
@@ -98,11 +100,14 @@ namespace ConsoleApplication8
                 }
             }
 
+        }
+        public static void CountBombs(Cell[,] array)
+        {
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    int count1 = 0;//считаем кол-во  бомб
+                    int count = 0;
                     if (array[i, j].Value != 9)
                     {
 
@@ -111,7 +116,7 @@ namespace ConsoleApplication8
 
                             if (array[i, j - 1].Value == 9)
                             {
-                                count1++;
+                                count++;
                             }
                         }
                         if (i - 1 >= 0 && i - 1 < array.GetLength(0) && j - 1 >= 0 && j - 1 < array.GetLength(1))
@@ -119,7 +124,7 @@ namespace ConsoleApplication8
 
                             if (array[i - 1, j - 1].Value == 9)
                             {
-                                count1++;
+                                count++;
                             }
                         }
                         if (i - 1 >= 0 && i - 1 < array.GetLength(0) && j >= 0 && j < array.GetLength(1))
@@ -127,7 +132,7 @@ namespace ConsoleApplication8
                             if (array[i - 1, j].Value == 9)
                             {
 
-                                count1++;
+                                count++;
                             }
                         }
                         if (i - 1 >= 0 && i - 1 < array.GetLength(0) && j + 1 >= 0 && j + 1 < array.GetLength(1))
@@ -135,7 +140,7 @@ namespace ConsoleApplication8
                             if (array[i - 1, j + 1].Value == 9)
                             {
 
-                                count1++;
+                                count++;
                             }
                         }
                         if (i >= 0 && i < array.GetLength(0) && j + 1 >= 0 && j + 1 < array.GetLength(1))
@@ -143,7 +148,7 @@ namespace ConsoleApplication8
                             if (array[i, j + 1].Value == 9)
                             {
 
-                                count1++;
+                                count++;
                             }
                         }
                         if (i + 1 >= 0 && i + 1 < array.GetLength(0) && j + 1 >= 0 && j + 1 < array.GetLength(1))
@@ -151,7 +156,7 @@ namespace ConsoleApplication8
                             if (array[i + 1, j + 1].Value == 9)
                             {
 
-                                count1++;
+                                count++;
                             }
                         }
                         if (i + 1 >= 0 && i + 1 < array.GetLength(0) && j >= 0 && j < array.GetLength(1))
@@ -159,7 +164,7 @@ namespace ConsoleApplication8
                             if (array[i + 1, j].Value == 9)
                             {
 
-                                count1++;
+                                count++;
                             }
                         }
                         if (i + 1 >= 0 && i + 1 < array.GetLength(0) && j - 1 >= 0 && j - 1 < array.GetLength(1))
@@ -167,11 +172,11 @@ namespace ConsoleApplication8
                             if (array[i + 1, j - 1].Value == 9)
                             {
 
-                                count1++;
+                                count++;
                             }
                         }
 
-                        array[i, j].Value = count1;
+                        array[i, j].Value = count;
                     }
                 }
 
@@ -180,16 +185,18 @@ namespace ConsoleApplication8
         }
 
 
-        public static void FillArray(Cell[,] array, int bombCount)
+        public static Cell[,] CreateArray(int size)
         {
-            for (int i = 0; i < array.GetLength(0); i++)
+            Cell[,] array = new Cell[size, size];
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
+                for (int j = 0; j < size; j++)
                 {
-                    array[i, j] = new Cell(); // todo почитать что такое экземпляр класса!
+                    array[i, j] = new Cell();
 
                 }
             }
+            return array;
         }
 
         public static Cell InputCell(Cell[,] array)
@@ -211,10 +218,7 @@ namespace ConsoleApplication8
             return array[i, j];
 
         }
-        public static void PrintArray(Cell[,] array)
-        {
-            PrintArray(array, false);
-        }
+
 
         public static void PrintArray(Cell[,] array, bool showBombs)
         {
